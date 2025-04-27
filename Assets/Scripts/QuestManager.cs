@@ -1,31 +1,74 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class QuestManager : MonoBehaviour
 {
-    public Transform leyla;              // Leyla karakteri
-    public Transform mudur;              // Müdür karakteri
-    public TMP_Text questText;           // TextMeshPro Text objesi
-    public float mesafeLimit = 3f;       // Ne kadar yaklaşınca yazı değişecek?
-    public GameObject questWorldSprite;
+    public Transform leyla;
+    public Transform mudur;
+    public Transform currentItem; // yeni karakter
 
-    private bool mudureYaklasti = false;
+    public TMP_Text questText;
+    public float mesafeLimit = 3f;
+
+    public Button changeQuestButton;
+
+    private int mudurYaklasmaSayisi = 0;
+    private bool butonaBasildi = false;
+    private bool leylaMudurYakininda = false;
+    private bool currentItemMudurYakininda = false; // currentItem için de kontrol
 
     void Start()
     {
-        questText.text = "Hadi görevi öğrenmek için müdürün yanına git";
-        questWorldSprite.SetActive(false);
+        questText.text = "İlk görev için uygun karakteri seç ve müdürün yanına git";
+        changeQuestButton.onClick.AddListener(OnQuestButtonClick);
     }
 
     void Update()
     {
-        float mesafe = Vector2.Distance(leyla.position, mudur.position);
+        float mesafeLeyla = Vector2.Distance(leyla.position, mudur.position);
+        float mesafeCurrentItem = Vector2.Distance(currentItem.position, mudur.position);
 
-        if (!mudureYaklasti && mesafe <= mesafeLimit)
+        // LEYLA müdüre yaklaşırsa
+        if (mesafeLeyla <= mesafeLimit && !leylaMudurYakininda)
         {
-            mudureYaklasti = true;
-            questText.text = "hasNext() Leyla depoda getirecek makarna var mı kontrol et";
-            questWorldSprite.SetActive(true);
+            mudurYaklasmaSayisi++;
+            leylaMudurYakininda = true;
+
+            if (mudurYaklasmaSayisi == 1)
+            {
+                questText.text = "First() Leyla depoda getirecek ilk deterjan nerede? Kontrol için depoya gitmelisin.";
+            }
+            else if (mudurYaklasmaSayisi == 2 && butonaBasildi)
+            {
+                questText.text = "İlk deterjanın yeri 4A.";
+                Invoke(nameof(ChangeQuestAfterDelay), 3f);
+            }
+        }
+        else if (mesafeLeyla > mesafeLimit && leylaMudurYakininda)
+        {
+            leylaMudurYakininda = false;
+        }
+
+        // CURRENT ITEM müdüre yaklaşırsa
+        if (mesafeCurrentItem <= mesafeLimit && !currentItemMudurYakininda)
+        {
+            currentItemMudurYakininda = true;
+            questText.text = "Sen 4A'daki deterjanı getirmeli ve reyondaki yerine koymalısın.";
+        }
+        else if (mesafeCurrentItem > mesafeLimit && currentItemMudurYakininda)
+        {
+            currentItemMudurYakininda = false;
         }
     }
-}
+
+    void OnQuestButtonClick()
+    {
+        butonaBasildi = true;
+    }
+
+    void ChangeQuestAfterDelay()
+    {
+        questText.text = "Current item yanıma gelsin.";
+    }
+} 
