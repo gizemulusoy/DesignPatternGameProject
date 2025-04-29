@@ -1,22 +1,31 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class QuestManager : MonoBehaviour
 {
+    [Header("Karakter ve Objeler")]
     public Transform leyla;
     public Transform mudur;
-    public Transform currentItem; // yeni karakter
+    public Transform currentItem;
+    public Transform urunTasimaNoktasi;
 
+    [Header("Görev ve UI")]
     public TMP_Text questText;
-    public float mesafeLimit = 3f;
-
     public Button changeQuestButton;
 
+    [Header("Katmanlar")]
+    public LayerMask urunLayerMask;
+
+    [Header("Ayarlar")]
+    public float mesafeLimit = 3f;
+
+    private GameObject tasinanUrun = null;
     private int mudurYaklasmaSayisi = 0;
     private bool butonaBasildi = false;
     private bool leylaMudurYakininda = false;
-    private bool currentItemMudurYakininda = false; // currentItem için de kontrol
+    private bool currentItemMudurYakininda = false;
 
     void Start()
     {
@@ -25,6 +34,12 @@ public class QuestManager : MonoBehaviour
     }
 
     void Update()
+    {
+        KarakterMesafeKontrolleri();
+        UrunSecVeTasi();
+    }
+
+    void KarakterMesafeKontrolleri()
     {
         float mesafeLeyla = Vector2.Distance(leyla.position, mudur.position);
         float mesafeCurrentItem = Vector2.Distance(currentItem.position, mudur.position);
@@ -62,6 +77,66 @@ public class QuestManager : MonoBehaviour
         }
     }
 
+    void UrunSecVeTasi()
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, urunLayerMask))
+            {
+                GameObject hedef = hit.collider.gameObject;
+
+                if (hedef.CompareTag("Urun"))
+                {
+                    if (tasinanUrun == null)
+                    {
+                        tasinanUrun = hedef;
+
+                        // Rigidbody ayarları
+                        Rigidbody rb = tasinanUrun.GetComponent<Rigidbody>();
+                        if (rb != null)
+                        {
+                            rb.isKinematic = true;
+                            rb.useGravity = false;
+                        }
+
+                        // Taşıma işlemi
+                        tasinanUrun.transform.SetParent(urunTasimaNoktasi);
+                        tasinanUrun.transform.localPosition = Vector3.zero;
+
+                        questText.text = "Ürün başarıyla alındı.";
+                    }
+                }
+                else
+                {
+                    questText.text = "Yanlış ürün!";
+                }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("HedefAlan") && tasinanUrun != null)
+        {
+            tasinanUrun.transform.SetParent(null);
+
+            Rigidbody rb = tasinanUrun.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.isKinematic = false;
+                rb.useGravity = true;
+            }
+
+            tasinanUrun = null;
+            questText.text = "Görevi tamamladın, şimdi müdürün yanına dönmelisin.";
+        }
+    }
+
     void OnQuestButtonClick()
     {
         butonaBasildi = true;
@@ -71,4 +146,4 @@ public class QuestManager : MonoBehaviour
     {
         questText.text = "Current item yanıma gelsin.";
     }
-} 
+}
