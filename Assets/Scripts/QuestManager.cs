@@ -10,6 +10,7 @@ public class QuestManager : MonoBehaviour
     public Transform mudur;
     public Transform currentItem;
     public Transform urunTasimaNoktasi;
+    public Transform targetPlace;
 
     [Header("Görev ve UI")]
     public TMP_Text questText;
@@ -17,6 +18,7 @@ public class QuestManager : MonoBehaviour
 
     [Header("Katmanlar")]
     public LayerMask urunLayerMask;
+    public LayerMask hedefAlan;
 
     [Header("Ayarlar")]
     public float mesafeLimit = 3f;
@@ -36,7 +38,7 @@ public class QuestManager : MonoBehaviour
     void Update()
     {
         KarakterMesafeKontrolleri();
-        UrunSecVeTasi();
+        TiklamaIslemleri();
     }
 
     void KarakterMesafeKontrolleri()
@@ -77,49 +79,62 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    void UrunSecVeTasi()
+    void TiklamaIslemleri()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, urunLayerMask))
+            // 1. Ürün seçme
+            if (tasinanUrun == null)
             {
-                GameObject hedef = hit.collider.gameObject;
-
-                if (hedef.CompareTag("Urun"))
+                RaycastHit2D urunHit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, urunLayerMask);
+                if (urunHit.collider != null && urunHit.collider.CompareTag("Urun"))
                 {
-                    if (tasinanUrun == null)
+                    tasinanUrun = urunHit.collider.gameObject;
+
+                    Rigidbody2D rb = tasinanUrun.GetComponent<Rigidbody2D>();
+                    if (rb != null)
                     {
-                        tasinanUrun = hedef;
-
-                        // Rigidbody ayarları
-                        Rigidbody rb = tasinanUrun.GetComponent<Rigidbody>();
-                        if (rb != null)
-                        {
-                            rb.isKinematic = true;
-                            rb.useGravity = false;
-                        }
-
-                        // Taşıma işlemi
-                        tasinanUrun.transform.SetParent(urunTasimaNoktasi);
-                        tasinanUrun.transform.localPosition = Vector3.zero;
-
-                        questText.text = "Ürün başarıyla alındı.";
+                        rb.isKinematic = true;
+                        rb.gravityScale = 0;
                     }
+
+                    tasinanUrun.transform.SetParent(urunTasimaNoktasi); // Child yapma
+                    tasinanUrun.transform.position = currentItem.position + new Vector3(0.5f, 0.1f, 0); // SABİT KALDI
+
+                    questText.text = "Ürün başarıyla alındı.";
                 }
-                else
+            }
+            else
+            {
+                // 2. Ürün bırakma (Hedef alana tıklama)
+                RaycastHit2D hedefHit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, hedefAlan);
+                if (hedefHit.collider != null && hedefHit.collider.CompareTag("HedefAlan"))
                 {
-                    questText.text = "Yanlış ürün!";
+                    tasinanUrun.transform.SetParent(null);
+
+                    Rigidbody2D rb = tasinanUrun.GetComponent<Rigidbody2D>();
+                    if (rb != null)
+                    {
+                        rb.isKinematic = false;
+                        rb.gravityScale = 1;
+                    }
+                    
+                    tasinanUrun.transform.SetParent(targetPlace);
+                    tasinanUrun.transform.position = targetPlace.position + new Vector3(0f, 0f, 0);
+
+                    
+                    //tasinanUrun = null;
+                    questText.text = "Görevi tamamladın, şimdi müdürün yanına dönmelisin.";
                 }
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+   /* private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("HedefAlan") && tasinanUrun != null)
         {
@@ -135,7 +150,7 @@ public class QuestManager : MonoBehaviour
             tasinanUrun = null;
             questText.text = "Görevi tamamladın, şimdi müdürün yanına dönmelisin.";
         }
-    }
+    }*/
 
     void OnQuestButtonClick()
     {
