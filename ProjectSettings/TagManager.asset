@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Pickup
+  - Urun
+  - YanlisUrun
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - UI
   - Outline
   - Player
-  - 
+  - Deterjan
   - 
   - 
   - 

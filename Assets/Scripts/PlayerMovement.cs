@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         movement.y = Input.GetAxisRaw("Vertical");
 
         // Debug: Hareketin doğru olup olmadığını kontrol et
-        Debug.Log("Movement X: " + movement.x + " Y: " + movement.y);
+        //Debug.Log("Movement X: " + movement.x + " Y: " + movement.y);
     }
 
     void FixedUpdate()
