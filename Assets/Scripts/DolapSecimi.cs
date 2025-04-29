@@ -32,6 +32,9 @@ public class DolapSecimi : MonoBehaviour
         PlayerPrefs.SetString("SecilenDolap", renk);
         PlayerPrefs.Save();
 
+        Gri.gameObject.SetActive(false);
+        Kahverengi.gameObject.SetActive(false);
+        
         // Paneli kapat
         secimPaneli.SetActive(false);
         
