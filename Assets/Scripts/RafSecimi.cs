@@ -5,6 +5,8 @@ public class RafSecimi : MonoBehaviour
 {
     public TMP_Text gorevText;
     public TMP_Text bilgiText;
+    public TMP_Text scoreText; // Skor metni
+
     public float moveSpeed = 5f;
 
     private string[] gorevIsimleri = new string[]
@@ -21,6 +23,8 @@ public class RafSecimi : MonoBehaviour
     private Vector2[] targetPositionsGri;
     private Vector2[] targetPositionsKahve;
 
+    private int score = 0;
+
     void Start()
     {
         secilenDolap = PlayerPrefs.GetString("SecilenDolap", "gri").ToLower();
@@ -35,17 +39,17 @@ public class RafSecimi : MonoBehaviour
 
             targetPositionsGri = new Vector2[]
             {
-                new Vector2(5.56f, 0.21f), //gri arka
-                new Vector2(6.72f, 0.16f), //gri sa9
-                new Vector2(4.42f, 0.12f), //gri sol
-                new Vector2(5.67f, 1.45f), //gri üst
-                new Vector2(5.64f, -1.1f), //gri alt 
-                new Vector2(5.84f, -1.33f), //gri alt ön
-                new Vector2(5.93f, -0.58f), //gri sol raf
-                new Vector2(6.4f, -0.06f), //gri raf 1  
-                new Vector2(6.33f, -0.58f), //gri raf 2
-                new Vector2(7.24f, 0.11f), // gri sağ kapak
-                new Vector2(4.97f, 0.14f) //gri sol kapak
+                new Vector2(5.56f, 0.21f),
+                new Vector2(6.72f, 0.16f),
+                new Vector2(4.42f, 0.12f),
+                new Vector2(5.67f, 1.45f),
+                new Vector2(5.64f, -1.1f),
+                new Vector2(5.84f, -1.33f),
+                new Vector2(5.93f, -0.58f),
+                new Vector2(6.4f, -0.06f),
+                new Vector2(6.33f, -0.58f),
+                new Vector2(7.24f, 0.11f),
+                new Vector2(4.97f, 0.14f)
             };
         }
         else if (secilenDolap == "kahve")
@@ -58,22 +62,23 @@ public class RafSecimi : MonoBehaviour
 
             targetPositionsKahve = new Vector2[]
             {
-                new Vector2(-6.019217f, 0.749076f), //kahve arka
-                new Vector2(-4.88f, 0.6629671f), //kahve sağ
-                new Vector2(-7.14f, 0.61f), //kahve sol
-                new Vector2(-6, 1.97f), //kahve üst
-                new Vector2(-5.87f, -0.55f), //kahve alt
-                new Vector2(-5.73f, -0.76f), //kahve alt ön
-                new Vector2(-5.7f, -0.04f), //kahve sol raf
-                new Vector2(-5.24f, 0.49f), //kahve raf 1
-                new Vector2(-5.3f, -0.04f), //kahve raf2
-                new Vector2(-4.33f, 0.62f), //kahve sağ kapak
-                new Vector2(-6.59f, 0.72f) //kahve sol kapak
+                new Vector2(5.56f, 0.21f),
+                new Vector2(6.72f, 0.16f),
+                new Vector2(4.42f, 0.12f),
+                new Vector2(5.67f, 1.45f),
+                new Vector2(5.64f, -1.1f),
+                new Vector2(5.84f, -1.33f),
+                new Vector2(5.93f, -0.58f),
+                new Vector2(6.4f, -0.06f),
+                new Vector2(6.33f, -0.58f),
+                new Vector2(7.24f, 0.11f),
+                new Vector2(4.97f, 0.14f)
             };
         }
 
         GuncelleGorevMetni();
         bilgiText.text = "";
+        SkoruGuncelle();
     }
 
     void Update()
@@ -94,9 +99,11 @@ public class RafSecimi : MonoBehaviour
                     bilgiText.text = "Doğru!";
                     cevapBekleniyor = false;
 
-                    // Objeyi hareket ettir
-                    MoveObjectToTarget(objeninAdi, gorevIndex);
+                    // Doğruysa 5 puan ekle
+                    score += 5;
+                    SkoruGuncelle();
 
+                    MoveObjectToTarget(objeninAdi, gorevIndex);
                     gorevIndex++;
 
                     if (gorevIndex < gorevIsimleri.Length)
@@ -114,6 +121,11 @@ public class RafSecimi : MonoBehaviour
                 {
                     bilgiText.text = "Tekrar dene.";
                     cevapBekleniyor = false;
+
+                    // Yanlışsa 1 puan çıkar
+                    score -= 1;
+                    SkoruGuncelle();
+
                     Invoke("BilgiMetniTemizle", 1f);
                 }
             }
@@ -132,7 +144,6 @@ public class RafSecimi : MonoBehaviour
         if (gorevIndex < gorevIsimleri.Length)
         {
             gorevText.text = gorevIsimleri[gorevIndex] + " seç";
-            // Objeyi başlangıçta hareket ettirmiyoruz
         }
     }
 
@@ -171,5 +182,10 @@ public class RafSecimi : MonoBehaviour
         }
 
         targetObject.transform.position = targetPosition;
+    }
+
+    void SkoruGuncelle()
+    {
+        scoreText.text = "Puan: " + score.ToString();
     }
 }
