@@ -2,19 +2,25 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
+using System.Collections;
 
 public class QuestManager : MonoBehaviour
 {
-    [Header("Karakter ve Objeler")]
-    public Transform leyla;
+    [FormerlySerializedAs("leyla")] [Header("Karakter ve Objeler")]
+    public Transform leylaF;
     public Transform mudur;
-    public Transform currentItem;
+    [FormerlySerializedAs("currentItem")] public Transform cansuCI;
     public Transform urunTasimaNoktasi;
     public Transform targetPlace;
+    public Transform namıkN;
+    public Transform nextControlArea;
 
     [Header("Görev ve UI")]
     public TMP_Text questText;
     public Button changeQuestButton;
+    public Button nextButton;
+    public TMP_Text nextButtonText; // Butonun Text bileşenini buraya bağlayacağız
 
     [Header("Katmanlar")]
     public LayerMask urunLayerMask;
@@ -22,60 +28,49 @@ public class QuestManager : MonoBehaviour
 
     [Header("Ayarlar")]
     public float mesafeLimit = 3f;
+    public float namikMesafeLimit = 2f;
 
     private GameObject tasinanUrun = null;
     private int mudurYaklasmaSayisi = 0;
     private bool butonaBasildi = false;
     private bool leylaMudurYakininda = false;
-    private bool currentItemMudurYakininda = false;
+    private bool cansuMudurYakininda = false;
+    private bool namikKontrolAktif = false;
+    private bool nextButonAktif = false;
 
     void Start()
     {
         questText.text = "İlk görev için uygun karakteri seç ve müdürün yanına git";
         changeQuestButton.onClick.AddListener(OnQuestButtonClick);
+        nextButton.onClick.AddListener(OnNextButtonClick);
+        nextButton.gameObject.SetActive(false); // Başlangıçta buton gizli
     }
 
     void Update()
     {
         KarakterMesafeKontrolleri();
         TiklamaIslemleri();
+        NamikHareketKontrol();
     }
 
     void KarakterMesafeKontrolleri()
     {
-        float mesafeLeyla = Vector2.Distance(leyla.position, mudur.position);
-        float mesafeCurrentItem = Vector2.Distance(currentItem.position, mudur.position);
+        float mesafeLeyla = Vector2.Distance(leylaF.position, mudur.position);
+        float mesafeCansu = Vector2.Distance(leylaF.position, cansuCI.position);
 
-        // LEYLA müdüre yaklaşırsa
         if (mesafeLeyla <= mesafeLimit && !leylaMudurYakininda)
         {
-            mudurYaklasmaSayisi++;
             leylaMudurYakininda = true;
-
-            if (mudurYaklasmaSayisi == 1)
+            if (!butonaBasildi)
             {
                 questText.text = "First() Leyla depoda getirecek ilk deterjan nerede? Kontrol için depoya gitmelisin.";
             }
-            else if (mudurYaklasmaSayisi == 2 && butonaBasildi)
-            {
-                questText.text = "İlk deterjanın yeri 4A.";
-                Invoke(nameof(ChangeQuestAfterDelay), 3f);
-            }
-        }
-        else if (mesafeLeyla > mesafeLimit && leylaMudurYakininda)
-        {
-            leylaMudurYakininda = false;
         }
 
-        // CURRENT ITEM müdüre yaklaşırsa
-        if (mesafeCurrentItem <= mesafeLimit && !currentItemMudurYakininda)
+        if (butonaBasildi && mesafeCansu <= mesafeLimit && !cansuMudurYakininda)
         {
-            currentItemMudurYakininda = true;
-            questText.text = "Sen 4A'daki deterjanı getirmeli ve reyondaki yerine koymalısın.";
-        }
-        else if (mesafeCurrentItem > mesafeLimit && currentItemMudurYakininda)
-        {
-            currentItemMudurYakininda = false;
+            cansuMudurYakininda = true;
+            questText.text = "Deterjan 4E'de. Ürünü depodan alıp reyondaki yerine koymalısın";
         }
     }
 
@@ -87,78 +82,63 @@ public class QuestManager : MonoBehaviour
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            // 1. Ürün seçme
             if (tasinanUrun == null)
             {
                 RaycastHit2D urunHit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, urunLayerMask);
                 if (urunHit.collider != null && urunHit.collider.CompareTag("Urun"))
                 {
                     tasinanUrun = urunHit.collider.gameObject;
-
-                    Rigidbody2D rb = tasinanUrun.GetComponent<Rigidbody2D>();
-                    if (rb != null)
-                    {
-                        rb.isKinematic = true;
-                        rb.gravityScale = 0;
-                    }
-
-                    tasinanUrun.transform.SetParent(urunTasimaNoktasi); // Child yapma
-                    tasinanUrun.transform.position = currentItem.position + new Vector3(0.5f, 0.1f, 0); // SABİT KALDI
-
+                    tasinanUrun.transform.SetParent(urunTasimaNoktasi);
+                    tasinanUrun.transform.position = cansuCI.position + new Vector3(0.5f, 0.1f, 0);
                     questText.text = "Ürün başarıyla alındı.";
                 }
             }
             else
             {
-                // 2. Ürün bırakma (Hedef alana tıklama)
                 RaycastHit2D hedefHit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, hedefAlan);
                 if (hedefHit.collider != null && hedefHit.collider.CompareTag("HedefAlan"))
                 {
-                    tasinanUrun.transform.SetParent(null);
-
-                    Rigidbody2D rb = tasinanUrun.GetComponent<Rigidbody2D>();
-                    if (rb != null)
-                    {
-                        rb.isKinematic = false;
-                        rb.gravityScale = 1;
-                    }
-                    
                     tasinanUrun.transform.SetParent(targetPlace);
-                    tasinanUrun.transform.position = targetPlace.position + new Vector3(0f, 0f, 0);
-
-                    
-                    //tasinanUrun = null;
-                    questText.text = "Görevi tamamladın, şimdi müdürün yanına dönmelisin.";
+                    tasinanUrun.transform.position = targetPlace.position;
+                    tasinanUrun = null;
+                    questText.text = "Görev tamamlandı, sırada başka ürün var mı? Kontol için Next() depoya gitmeli.";
+                    namikKontrolAktif = true;
                 }
             }
         }
     }
 
-   /* private void OnTriggerEnter(Collider other)
+    void NamikHareketKontrol()
     {
-        if (other.CompareTag("HedefAlan") && tasinanUrun != null)
+        if (namikKontrolAktif)
         {
-            tasinanUrun.transform.SetParent(null);
-
-            Rigidbody rb = tasinanUrun.GetComponent<Rigidbody>();
-            if (rb != null)
+            float mesafeNamık = Vector2.Distance(namıkN.position, nextControlArea.position);
+            if (mesafeNamık <= namikMesafeLimit)
             {
-                rb.isKinematic = false;
-                rb.useGravity = true;
+                nextButton.gameObject.SetActive(true);
+                questText.text = "Namık kontrol alanında. Kontrol et butonuna tıkla.";
             }
-
-            tasinanUrun = null;
-            questText.text = "Görevi tamamladın, şimdi müdürün yanına dönmelisin.";
         }
-    }*/
+    }
+
+    void OnNextButtonClick()
+    {
+        nextButtonText.text = "Checked";
+        StartCoroutine(DisableButtonAfterDelay());
+    }
+
+    IEnumerator DisableButtonAfterDelay()
+    {
+        yield return new WaitForSeconds(3f);
+        nextButton.gameObject.SetActive(false);
+        questText.text = "Kontrol edildi. Şimdi sıradaki ürün varsa yerini current item'a bildirmelisin.";
+        nextButtonText.text = "Check"; // Buton metnini eski haline döndür
+        namikKontrolAktif = false;
+    }
 
     void OnQuestButtonClick()
     {
         butonaBasildi = true;
-    }
-
-    void ChangeQuestAfterDelay()
-    {
-        questText.text = "Current item yanıma gelsin.";
+        questText.text = "Şimdi ilk ürünün yerini current item Cansu'ya söylemelisin.";
     }
 }
