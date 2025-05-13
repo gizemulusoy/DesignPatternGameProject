@@ -20,7 +20,7 @@ public class QuestManager : MonoBehaviour
     public TMP_Text questText;
     public Button changeQuestButton;
     public Button nextButton;
-    public TMP_Text nextButtonText; // Butonun Text bileşenini buraya bağlayacağız
+    public TMP_Text nextButtonText;
 
     [Header("Katmanlar")]
     public LayerMask urunLayerMask;
@@ -31,19 +31,19 @@ public class QuestManager : MonoBehaviour
     public float namikMesafeLimit = 2f;
 
     private GameObject tasinanUrun = null;
-    private int mudurYaklasmaSayisi = 0;
     private bool butonaBasildi = false;
     private bool leylaMudurYakininda = false;
     private bool cansuMudurYakininda = false;
     private bool namikKontrolAktif = false;
-    private bool nextButonAktif = false;
+    private bool namikCurrentItemYakininda = false;
+    private bool checkedButonBasilmis = false;
 
     void Start()
     {
         questText.text = "İlk görev için uygun karakteri seç ve müdürün yanına git";
         changeQuestButton.onClick.AddListener(OnQuestButtonClick);
         nextButton.onClick.AddListener(OnNextButtonClick);
-        nextButton.gameObject.SetActive(false); // Başlangıçta buton gizli
+        nextButton.gameObject.SetActive(false);
     }
 
     void Update()
@@ -55,22 +55,29 @@ public class QuestManager : MonoBehaviour
 
     void KarakterMesafeKontrolleri()
     {
-        float mesafeLeyla = Vector2.Distance(leylaF.position, mudur.position);
-        float mesafeCansu = Vector2.Distance(leylaF.position, cansuCI.position);
+        float mesafeLeyla = Vector3.Distance(leylaF.position, mudur.position);
+        float mesafeCansu = Vector3.Distance(leylaF.position, cansuCI.position);
+        float mesafeNamikCurrentItem = Vector3.Distance(namıkN.position, cansuCI.position);
 
         if (mesafeLeyla <= mesafeLimit && !leylaMudurYakininda)
         {
             leylaMudurYakininda = true;
-            if (!butonaBasildi)
-            {
-                questText.text = "First() Leyla depoda getirecek ilk deterjan nerede? Kontrol için depoya gitmelisin.";
-            }
+            if (!butonaBasildi) questText.text = "First() Leyla depoda getirecek ilk deterjan nerede? Kontrol için depoya gitmelisin.";
         }
 
         if (butonaBasildi && mesafeCansu <= mesafeLimit && !cansuMudurYakininda)
         {
             cansuMudurYakininda = true;
             questText.text = "Deterjan 4E'de. Ürünü depodan alıp reyondaki yerine koymalısın";
+        }
+
+        if (namikKontrolAktif && mesafeNamikCurrentItem <= namikMesafeLimit && !namikCurrentItemYakininda)
+        {
+            namikCurrentItemYakininda = true;
+            if (checkedButonBasilmis)
+            {
+                questText.text = "Sıradaki ürünün yeri 4F.";
+            }
         }
     }
 
@@ -101,7 +108,7 @@ public class QuestManager : MonoBehaviour
                     tasinanUrun.transform.SetParent(targetPlace);
                     tasinanUrun.transform.position = targetPlace.position;
                     tasinanUrun = null;
-                    questText.text = "Görev tamamlandı, sırada başka ürün var mı? Kontol için Next() depoya gitmeli.";
+                    questText.text = "Görev tamamlandı. Kontrol için Namık depoya gitmeli.";
                     namikKontrolAktif = true;
                 }
             }
@@ -112,7 +119,7 @@ public class QuestManager : MonoBehaviour
     {
         if (namikKontrolAktif)
         {
-            float mesafeNamık = Vector2.Distance(namıkN.position, nextControlArea.position);
+            float mesafeNamık = Vector3.Distance(namıkN.position, nextControlArea.position);
             if (mesafeNamık <= namikMesafeLimit)
             {
                 nextButton.gameObject.SetActive(true);
@@ -124,6 +131,7 @@ public class QuestManager : MonoBehaviour
     void OnNextButtonClick()
     {
         nextButtonText.text = "Checked";
+        checkedButonBasilmis = true;
         StartCoroutine(DisableButtonAfterDelay());
     }
 
@@ -131,9 +139,9 @@ public class QuestManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         nextButton.gameObject.SetActive(false);
-        questText.text = "Kontrol edildi. Şimdi sıradaki ürün varsa yerini current item'a bildirmelisin.";
-        nextButtonText.text = "Check"; // Buton metnini eski haline döndür
+        nextButtonText.text = "Check";
         namikKontrolAktif = false;
+        namikCurrentItemYakininda = false;
     }
 
     void OnQuestButtonClick()
