@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RafSecimi : MonoBehaviour
 {
@@ -115,6 +116,12 @@ public class RafSecimi : MonoBehaviour
                         gorevText.text = "";
                         bilgiText.text = "Tebrikler! Görev tamam.";
                         Invoke("BilgiMetniTemizle", 2f);
+                        
+                        
+                        Invoke("LoadNextScene", 5f);
+                        
+                    
+                        
                     }
                 }
                 else
@@ -151,6 +158,11 @@ public class RafSecimi : MonoBehaviour
     {
         bilgiText.text = "";
         cevapBekleniyor = true;
+    }
+    
+    void LoadNextScene()
+    {
+        SceneManager.LoadScene("Scene1.2");
     }
 
     void MoveObjectToTarget(string objectName, int index)

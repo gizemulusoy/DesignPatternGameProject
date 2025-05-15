@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class KutuController : MonoBehaviour
 {
@@ -161,6 +162,10 @@ public class KutuController : MonoBehaviour
         // YENİ EKLENEN KISIM: griKapak hareketleri
         yield return StartCoroutine(MoveToPosition(griKapakSag, new Vector3(5.77f, 2.32f, 0f), 1.5f));
         yield return StartCoroutine(MoveToPosition(griKapakSol, new Vector3(3.41f, 2.35f, 0f), 1.5f));
+        
+        yield return new WaitForSeconds(2f);  // istersen geçiş öncesi bekle
+
+        SceneManager.LoadScene("Scene2");
     }
 
 

@@ -15,6 +15,7 @@ public class QuestManager : MonoBehaviour
     public Transform targetPlace;
     public Transform namıkN;
     public Transform nextControlArea;
+    public Transform demirD;
 
     [Header("Görev ve UI")]
     public TMP_Text questText;
@@ -142,6 +143,8 @@ public class QuestManager : MonoBehaviour
         nextButtonText.text = "Check";
         namikKontrolAktif = false;
         namikCurrentItemYakininda = false;
+        
+        checkedButonBasilmis = false;
     }
 
     void OnQuestButtonClick()
@@ -149,4 +152,4 @@ public class QuestManager : MonoBehaviour
         butonaBasildi = true;
         questText.text = "Şimdi ilk ürünün yerini current item Cansu'ya söylemelisin.";
     }
-}
+} 
