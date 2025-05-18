@@ -12,8 +12,8 @@ public class RafSecimi : MonoBehaviour
 
     private string[] gorevIsimleri = new string[]
     {
-        "Arka kasa ", "Sağ kasa", "Sol kasa", "Üst raf", "Alt raf",
-        "Alt ön raf", "İç raf sol", "İç üst raf ", "İç alt raf ", "Sağ kapak", "Sol kapak"
+        "Arka kasa ", "Sağ kasa", "Sol kasa", "Üst kasa", "Alt kasa",
+        "Alt ön kasa", "İç raf sol", "İç üst raf ", "İç alt raf ", "Sağ kapak", "Sol kapak"
     };
 
     private string[] objeAdlari;

@@ -7,7 +7,7 @@ public class MenuManager : MonoBehaviour
     public void StartGame()
     {
         // Sahne ismini burada belirt
-        SceneManager.LoadScene("Scene1");
+        SceneManager.LoadScene("AFInfo1");
     }
 
     // Opsiyonel: Oyundan çıkmak için

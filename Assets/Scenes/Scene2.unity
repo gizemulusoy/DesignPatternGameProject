@@ -2399,8 +2399,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: deneme
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c8ce84c71eee42f4f9aa5574ead2e905, type: 2}
-  m_sharedMaterial: {fileID: 8817269341821525657, guid: c8ce84c71eee42f4f9aa5574ead2e905, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 517696690fb0879448fb4eb45b207879, type: 2}
+  m_sharedMaterial: {fileID: 4515239410409870139, guid: 517696690fb0879448fb4eb45b207879, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2490,7 +2490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -64.080414, y: -145}
+  m_AnchoredPosition: {x: -63.1, y: -116.6}
   m_SizeDelta: {x: 352.968, y: 59.5524}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &984793823
