@@ -3,23 +3,19 @@ using UnityEngine.SceneManagement;
 
 public class SceneSwitcher2 : MonoBehaviour
 {
-    [SerializeField] private string AFInfo3; // Geçmek istediğin sahnenin adını yaz
+    [SerializeField] private string nextScene;     // Sağ ok ile gidilecek sahne
+    [SerializeField] private string previousScene; // Sol ok ile gidilecek sahne
 
     void Update()
     {
-        // Sadece belirli sahnede sağ ok tuşu çalışsın
-        if (SceneManager.GetActiveScene().name == "AFInfo2") // Bu kısmı geçiş yapmak istediğin sahne adıyla değiştir
+        if (Input.GetKeyDown(KeyCode.RightArrow) && !string.IsNullOrEmpty(nextScene))
         {
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                LoadTargetScene();
-            }
+            SceneManager.LoadScene(nextScene);
         }
-    }
 
-    void LoadTargetScene()
-    {
-        // Hedef sahneye geçiş yap
-        SceneManager.LoadScene("AFInfo3");
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && !string.IsNullOrEmpty(previousScene))
+        {
+            SceneManager.LoadScene(previousScene);
+        }
     }
 }

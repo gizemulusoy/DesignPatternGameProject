@@ -406,140 +406,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 348307095}
   m_CullTransparentMesh: 1
---- !u!1 &508229314
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 508229315}
-  - component: {fileID: 508229317}
-  - component: {fileID: 508229316}
-  m_Layer: 5
-  m_Name: Text (TMP)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &508229315
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508229314}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1595595533}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 29, y: 305}
-  m_SizeDelta: {x: 710.7129, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &508229316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508229314}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 'Level 1: Abstract Factory'
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 517696690fb0879448fb4eb45b207879, type: 2}
-  m_sharedMaterial: {fileID: 4515239410409870139, guid: 517696690fb0879448fb4eb45b207879, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 56.21
-  m_fontSizeBase: 56.21
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: -68.87366, y: 0, z: -90.06641, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &508229317
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508229314}
-  m_CullTransparentMesh: 1
 --- !u!1 &731371691
 GameObject:
   m_ObjectHideFlags: 0
@@ -569,8 +435,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c76ef75bee53d4fa57aabbdf2a8c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextScene: AFInfo1.1
-  previousScene: MainMenu
+  nextScene: AFInfo2
+  previousScene: AFInfo1
 --- !u!4 &731371693
 Transform:
   m_ObjectHideFlags: 0
@@ -643,10 +509,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Bu desen, do\u011Frudan \xFCr\xFCnleri de\u011Fil, \xFCr\xFCnlerin olu\u015Fturulmas\u0131ndan
-    sorumlu fabrikalar\u0131n aray\xFCzlerini (factory interfaces) tan\u0131mlar.
-    Her somut fabrika (concrete factory), belirli bir \xFCr\xFCn ailesine ait nesneleri
-    \xFCretir (\xFCr\xFCnler \u2013 products)."
+  m_text: "Bu sayede, uygulaman\u0131n tutarl\u0131l\u0131\u011F\u0131 korunurken,
+    farkl\u0131 \xFCr\xFCn ailelerini sisteme kolayca entegre etmek ve y\xF6netmek
+    m\xFCmk\xFCn hale gelir. Bu da tasar\u0131m\u0131n esnekli\u011Fini ve s\xFCrd\xFCr\xFClebilirli\u011Fini
+    \xF6nemli \xF6l\xE7\xFCde art\u0131r\u0131r."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -923,10 +789,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Soyut Fabrika Deseni (Abstract Factory Pattern), birbiriyle ili\u015Fkili
-    \xFCr\xFCn gruplar\u0131n\u0131 (related products) olu\u015Fturmak i\xE7in kullan\u0131lan,
-    Yarat\u0131msal Tasar\u0131m Kal\u0131b\u0131 (Creational Design Pattern) t\xFCrlerinden
-    biridir. "
+  m_text: "B\xF6ylece istemci (client) kodu, \xFCr\xFCnlerin nas\u0131l \xFCretildi\u011Fine
+    ya da somut s\u0131n\u0131flar\u0131n detaylar\u0131na ba\u011F\u0131ml\u0131
+    kalmaz; yaln\u0131zca soyut fabrika (abstract factory) ve soyut \xFCr\xFCn aray\xFCzleriyle
+    (abstract products) \xE7al\u0131\u015F\u0131r."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1175,7 +1041,6 @@ RectTransform:
   - {fileID: 5755397}
   - {fileID: 1790786996}
   - {fileID: 1113558701}
-  - {fileID: 508229315}
   - {fileID: 1180993798}
   - {fileID: 348307096}
   - {fileID: 2110759904}
@@ -1239,7 +1104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.015667249, g: 0, b: 0.4716981, a: 1}
+  m_Color: {r: 0.015686275, g: 0, b: 0.47058824, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

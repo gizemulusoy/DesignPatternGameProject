@@ -162,7 +162,7 @@ public class RafSecimi : MonoBehaviour
     
     void LoadNextScene()
     {
-        SceneManager.LoadScene("Scene1.2");
+        SceneManager.LoadScene("AFInfoAra");
     }
 
     void MoveObjectToTarget(string objectName, int index)
